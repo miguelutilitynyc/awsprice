@@ -3,7 +3,7 @@
 
 AWS Price Calculator in Python3
 ## Get started
-`pip3 install requirements.txt`
+**see makefile**
 ## Features
 
 - List products from pricing region in a json file
