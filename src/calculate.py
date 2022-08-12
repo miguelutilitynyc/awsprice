@@ -1,5 +1,5 @@
 import json
-from math import prod
+
 import boto3
 
 pricing_client = boto3.client('pricing', region_name='us-east-1')
