@@ -1,0 +1,34 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Best Practice SNS Topic",
+  "Mappings": {},
+  "Conditions": {},
+  "Resources": {
+    "SNSTopic":{
+  "Type" : "AWS::SNS::Topic",
+  "Properties" : {
+  }
+
+  },
+    "SNSSubscription":{
+  "Type" : "AWS::SNS::Subscription",
+  "Properties" : {
+    "TopicArn" : {"Ref":"SNSTopic"}
+  }
+}
+  },
+  "Outputs": {
+    "TopicARN" : {
+      "Description" : "ARN of newly created SNS Topic",
+      "Value" : { "Ref" : "SNSTopic" }
+    },
+    "QueueName" : {
+      "Description" : "Name of newly created SNS Topic",
+      "Value" : { "Fn::GetAtt" : ["SNSTopic", "TopicName"]}
+    }
+  }
+}
+
+
+
+

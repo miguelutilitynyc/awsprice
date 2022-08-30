@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Lambda to run a shouty echo service.
+
+Parameters:
+  LambdaFunctionName:
+    Type: String
+    AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
+    Default: java-demo
+
+  S3Bucket:
+    Type: String
+    Default: code402
+
+  S3Key:
+    Type: String
+    Default: java-demo.jar
+
+Resources:
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: !Ref S3Bucket
+        S3Key: !Ref S3Key
+      Runtime: java8
+      Description: Shouty echo service
+      FunctionName: !Ref LambdaFunctionName
+      Handler: com.code402.App
+      MemorySize: 256
+      Role: !GetAtt LambdaIAMRole.Arn
+      Timeout: 60
+
+  LambdaIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com

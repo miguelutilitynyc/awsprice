@@ -12,3 +12,8 @@ AWS Price Calculator in Python3
 ` python3 src/ec2_get_ondemand_prices.py`
 - show EC2 cost only on console
 ` python3 src/ec2.py`
+
+## Console estimation
+`aws cloudformation estimate-template-cost --template-body file://path_to_cloudformation_file`
+
+This will return the cost link if successfully executed

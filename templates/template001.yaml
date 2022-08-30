@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+# Transform: AWS::Serverless-2016-10-31
+Description: Partner HUB DynamoDBs
+
+Parameters:
+  Stage:
+    Type: String
+    Default: "dev"
+  Tenant:
+    Type: String
+    Default: "local"
+  
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: "BucketOwnerFullControl"
+      BucketName: !Sub "dev-local-serasa-score-bucket"
+      NotificationConfiguration:
+        QueueConfigurations: 
+          - Event: "s3:ObjectCreated:*"
+            Queue: !GetAtt S3BucketSQS.Arn
+
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Effect: "Allow"
+            Principal: 
+              AWS: arn:aws:iam::823934718776:user/*
+            Action: "*"
+            Resource: !GetAtt S3Bucket.Arn
+      Bucket: !Ref S3Bucket
+
+  S3BucketSQS:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub "dev-local-s3-bucket-sqs"
+      VisibilityTimeout: 60
+      Tags:
+        - Key: Tenant
+          Value: !Ref Tenant
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: SQS
+        - Key: Name
+          Value: !Sub "dev-local-s3-bucket-sqs"

@@ -1,0 +1,13 @@
+aws cloudformation package \
+    --template-file template.yaml \
+    --s3-bucket ${CFN_BUCKET} \
+    --output-template-file outputSamTemplate.yaml
+echo "Deploying Stack"
+
+aws cloudformation deploy \
+    --template-file outputSamTemplate.yaml \
+    --parameter-overrides \
+    $(jq -r '.Parameters | keys[] as $k | "\($k)=\(.[$k])"' pipeline-params-dev.json) \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --s3-bucket ${CFN_BUCKET} \
+    --stack-name ${STACK_NAME}
