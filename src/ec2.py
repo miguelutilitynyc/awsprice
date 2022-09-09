@@ -45,4 +45,6 @@ client = boto3.client('pricing', region_name='us-east-1')
 
 # Get current price for a given instance, region and os
 price = get_price(get_region_name('eu-west-1'), 't3.micro', 'Linux')
-print(price)
+print('unit price: '+ price)
+monthly_price = float(price) * 730
+print('Monthly cost: (unit price x 730h) = ' + str(monthly_price))
